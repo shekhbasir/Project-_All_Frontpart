@@ -4,9 +4,38 @@ import "./sign.css";
 import mainlogo from "../assets/mainlog.png";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
 function Login() {
   const [show, setshow] = useState(false);
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [err, seterror] = useState("");
+  const [loading, setloading] = useState(false);
+  const hamarnavigate = useNavigate();
+  //here writing for handling this
+  const Hamarhandle = async (e) => {
+    e.preventDefault();
+    setloading(true);
+    try {
+      const res = await axios.post("http://localhost:3000/auth/login", {
+        email,
+        password,
+      });
+      setemail("");
+      setpassword("");
+      seterror("");
+      hamarnavigate("/Saradata");
+
+      console.log(res.data);
+    } catch (error) {
+      seterror(error.response.data.message);
+    } finally {
+      setloading(false);
+    }
+  };
+
   return (
     <>
       <div className="sabmain">
@@ -16,11 +45,15 @@ function Login() {
         <div className="formkam">
           <div className="formkam1">
             <p className="p1kam">Login</p>
-            <form action="" className="mainform">
+            {err && <p className="jan">{err}</p>}
+            <form onSubmit={Hamarhandle} className="mainform">
               <input
                 type="email"
                 name="email"
                 id="allinp"
+                required
+                value={email}
+                onChange={(e) => setemail(e.target.value)}
                 placeholder="Email"
               />
               <div className="sam1">
@@ -28,6 +61,9 @@ function Login() {
                   type={show ? "text" : "password"}
                   name="password"
                   id="allinp"
+                  value={password}
+                  required
+                  onChange={(e) => setpassword(e.target.value)}
                   placeholder="PassWord"
                 />
                 <span className="ham1" onClick={() => setshow((prev) => !prev)}>
@@ -35,7 +71,11 @@ function Login() {
                 </span>
               </div>
 
-              <input type="submit" value={"SignUp"} className="sab1" />
+              <input
+                type="submit"
+                value={loading ? "Loading..." : "Login"}
+                className="sab1"
+              />
             </form>
             <div className="kam1">
               {" "}

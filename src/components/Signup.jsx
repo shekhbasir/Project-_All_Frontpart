@@ -2,7 +2,7 @@ import "./sign.css";
 import mainlogo from "../assets/mainlog.png";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function Signup() {
@@ -13,9 +13,13 @@ function Signup() {
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const [err, seterror] = useState("");
+  const [loading, setloading] = useState(false);
+
+  const hamanvigate = useNavigate();
 
   const Handlesubmit = async (e) => {
     e.preventDefault();
+    setloading(true);
     try {
       const res = await axios.post("http://localhost:3000/auth/signup", {
         firstname,
@@ -30,9 +34,12 @@ function Signup() {
       setemail("");
       setpassword("");
       seterror("");
+      hamanvigate("/login");
       console.log(res);
     } catch (error) {
       seterror(error.response.data.message);
+    } finally {
+      setloading(false);
     }
   };
 
@@ -99,7 +106,12 @@ function Signup() {
                 </span>
               </div>
 
-              <input type="submit" value={"SignUp"} className="sab1" />
+              <input
+                type="submit"
+                value={loading ? "loading.." : "SignUp"}
+                className="sab1"
+                disabled={loading}
+              />
             </form>
 
             <div className="kam1">
@@ -120,3 +132,5 @@ function Signup() {
 export default Signup;
 
 //this is the simple code here and it is working
+//after succesfully loading i am direcly going to sending the data there
+//now i am going to working with the login page as much similar
