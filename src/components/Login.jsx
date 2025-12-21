@@ -2,10 +2,11 @@
 
 import "./sign.css";
 import mainlogo from "../assets/mainlog.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Creatkar from "../context/Creatkar";
 
 function Login() {
   const [show, setshow] = useState(false);
@@ -14,19 +15,25 @@ function Login() {
   const [err, seterror] = useState("");
   const [loading, setloading] = useState(false);
   const hamarnavigate = useNavigate();
+  const { setdata } = useContext(Creatkar);
   //here writing for handling this
   const Hamarhandle = async (e) => {
     e.preventDefault();
     setloading(true);
     try {
-      const res = await axios.post("http://localhost:3000/auth/login", {
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:3000/auth/login",
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      setdata(res.data);
       setemail("");
       setpassword("");
       seterror("");
-      hamarnavigate("/Saradata");
+      hamarnavigate("/");
 
       console.log(res.data);
     } catch (error) {

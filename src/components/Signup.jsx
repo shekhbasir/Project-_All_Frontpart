@@ -1,9 +1,10 @@
 import "./sign.css";
 import mainlogo from "../assets/mainlog.png";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Creatkar from "../context/Creatkar";
 
 function Signup() {
   const [show, setshow] = useState(false);
@@ -14,6 +15,7 @@ function Signup() {
   const [password, setpassword] = useState("");
   const [err, seterror] = useState("");
   const [loading, setloading] = useState(false);
+  const { setdata } = useContext(Creatkar);
 
   const hamanvigate = useNavigate();
 
@@ -21,13 +23,18 @@ function Signup() {
     e.preventDefault();
     setloading(true);
     try {
-      const res = await axios.post("http://localhost:3000/auth/signup", {
-        firstname,
-        lastname,
-        username,
-        email,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:3000/auth/signup",
+        {
+          firstname,
+          lastname,
+          username,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      setdata(res.data);
       setfirstname("");
       setlastname("");
       setusername("");
@@ -134,3 +141,4 @@ export default Signup;
 //this is the simple code here and it is working
 //after succesfully loading i am direcly going to sending the data there
 //now i am going to working with the login page as much similar
+//in tihs way i am going to taking the data
