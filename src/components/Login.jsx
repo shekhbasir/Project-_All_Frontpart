@@ -29,7 +29,9 @@ function Login() {
         },
         { withCredentials: true }
       );
-      setdata(res.data);
+      setdata({
+        hamardata: res.data.hamardata,
+      });
       setemail("");
       setpassword("");
       seterror("");

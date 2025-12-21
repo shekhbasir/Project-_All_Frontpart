@@ -34,7 +34,9 @@ function Signup() {
         },
         { withCredentials: true }
       );
-      setdata(res.data);
+      setdata({
+        hamardata: res.data.hamardata,
+      });
       setfirstname("");
       setlastname("");
       setusername("");

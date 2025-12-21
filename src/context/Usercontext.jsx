@@ -11,7 +11,9 @@ function Usercontext({ children }) {
         const result = await axios.get("http://localhost:3000/auth/sabdetail", {
           withCredentials: true,
         });
-        setdata(result.data);
+        setdata({
+          hamardata: result.data.hamardata,
+        });
       } catch (error) {
         console.log(error);
         setdata(null);

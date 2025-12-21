@@ -4,10 +4,27 @@ import { Search, Bell, Users, House } from "lucide-react";
 import pp from "../assets/pp.avif";
 import { useContext, useState } from "react";
 import Creatkar from "../context/Creatkar";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function Hamnav() {
   const [open, setOpen] = useState(false);
 
-  const { newdata } = useContext(Creatkar);
+  const { newdata, setdata } = useContext(Creatkar);
+  const hamarnavigate = useNavigate();
+
+  //now i am going to calling thhe
+  const logoutinghandle = async () => {
+    try {
+      const resultvalue = await axios.get("http://localhost:3000/auth/logout", {
+        withCredentials: true,
+      });
+      setdata(null);
+      hamarnavigate("/login");
+      console.log(resultvalue);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className="mainnav">
@@ -41,7 +58,7 @@ function Hamnav() {
               onClick={() => setOpen(!open)}
             />
 
-            {open && (
+            {open && newdata && (
               <div className="profile-popup">
                 <div className="part1">
                   <img
@@ -52,7 +69,8 @@ function Hamnav() {
                     onClick={() => setOpen(!open)}
                   />
                   <p className="popp">
-                    {newdata.hamardata.firstname} {newdata.hamardata.lastname}
+                    {newdata?.hamardata?.firstname}{" "}
+                    {newdata?.hamardata?.lastname}
                   </p>
                 </div>
 
@@ -63,7 +81,9 @@ function Hamnav() {
                   My Networks
                 </div>
 
-                <button className="signout">Sign Out</button>
+                <button className="signout" onClick={logoutinghandle}>
+                  Sign Out
+                </button>
               </div>
             )}
           </div>
