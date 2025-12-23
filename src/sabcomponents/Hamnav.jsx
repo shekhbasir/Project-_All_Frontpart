@@ -69,7 +69,7 @@ function Hamnav() {
                     onClick={() => setOpen(!open)}
                   />
                   <p className="popp">
-                    {newdata?.hamardata?.firstname}{" "}
+                    {newdata ?.hamardata?.firstname}{" "}
                     {newdata?.hamardata?.lastname}
                   </p>
                 </div>
