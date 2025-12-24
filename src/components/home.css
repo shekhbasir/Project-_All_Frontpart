@@ -8,6 +8,7 @@
   min-height: 100vh;
   width: 100vw;
   background-color: #ff0505;
+  overflow: auto;
 }
 
 
